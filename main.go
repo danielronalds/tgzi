@@ -1,9 +1,11 @@
 package main
 
 import (
+	"fmt"
+
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/danielronalds/tgzi/tgzilib"
 	"github.com/danielronalds/tgzi/tgzitui"
-	tea "github.com/charmbracelet/bubbletea"
 )
 
 func main() {
@@ -14,7 +16,15 @@ func main() {
 	}
 
 	p := tea.NewProgram(tgzitui.NewTuiModel(files))
-	if _, err := p.Run(); err != nil {
+	model, err := p.Run()
+
+	if err != nil {
 		panic(err)
+	}
+
+	tuiModel := model.(tgzitui.TuiModel)
+
+	for _, file := range tuiModel.SelectedFiles {
+		fmt.Println(file)
 	}
 }

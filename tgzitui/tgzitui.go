@@ -10,12 +10,15 @@ type TuiModel struct {
 	files    []string
 	cursor   int
 	selected map[int]struct{}
+	// The exported list of files that were selected. Populated on exit
+	SelectedFiles []string
 }
 
 func NewTuiModel(files []string) TuiModel {
 	return TuiModel{
-		files:    files,
-		selected: make(map[int]struct{}),
+		files:         files,
+		selected:      make(map[int]struct{}),
+		SelectedFiles: make([]string, 0),
 	}
 }
 
@@ -47,7 +50,17 @@ func (m TuiModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			} else {
 				m.selected[m.cursor] = struct{}{}
 			}
+
+		case "enter":
+			for i, file := range m.files {
+				if _, ok := m.selected[i]; ok {
+					m.SelectedFiles = append(m.SelectedFiles, file)
+				}
+			}
+
+			return m, tea.Quit
 		}
+
 	}
 
 	return m, nil
