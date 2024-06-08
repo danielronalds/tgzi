@@ -6,14 +6,17 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 )
 
+// The data model for the TUI containing the state of the interface
 type TuiModel struct {
 	files    []string
 	cursor   int
 	selected map[int]struct{}
+	help     bool
 	// The exported list of files that were selected. Populated on exit
 	SelectedFiles []string
 }
 
+// Creates a new tui for selecting from the given files
 func NewTuiModel(files []string) TuiModel {
 	return TuiModel{
 		files:         files,
@@ -59,6 +62,9 @@ func (m TuiModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 
 			return m, tea.Quit
+
+		case "?":
+			m.help = !m.help
 		}
 
 	}
@@ -67,6 +73,16 @@ func (m TuiModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m TuiModel) View() string {
+	if m.help {
+		s := "Key        Action"
+		s += "\nup/k       navigate up the list"
+		s += "\ndown/j     navigate down the list"
+		s += "\nspace      Select a file"
+		s += "\nenter      Compress files"
+		s += "\n?          toggle help menu"
+		return s
+	}
+
 	s := "Select files to compress\n"
 
 	for i, file := range m.files {
@@ -83,7 +99,6 @@ func (m TuiModel) View() string {
 		s += fmt.Sprintf("%s [%s] %s\n", cursor, checked, file)
 	}
 
-	s += "\nPress Enter to compress"
-
+	s += "\nPress ? for help"
 	return s
 }
