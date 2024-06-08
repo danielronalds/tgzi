@@ -1,7 +1,10 @@
 package tgzitui
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"
 )
@@ -101,4 +104,18 @@ func (m TuiModel) View() string {
 
 	s += "\nPress ? for help"
 	return s
+}
+
+// Runs a one line prompt for the user to type the filename of the archive into
+func GetArchiveName() (string, error) {
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print("Archive name: ")
+
+	archive, err := reader.ReadString('\n')
+	if err != nil {
+		return "", err;
+	}
+    archive = strings.Replace(archive, "\n", "", -1)
+
+	return archive, nil
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/danielronalds/tgzi/tgzilib"
@@ -24,7 +25,11 @@ func main() {
 
 	tuiModel := model.(tgzitui.TuiModel)
 
-	for _, file := range tuiModel.SelectedFiles {
-		fmt.Println(file)
+
+	archive, err := tgzitui.GetArchiveName()
+	err = tgzilib.CompressFiles(archive, tuiModel.SelectedFiles)
+	if err != nil {
+		fmt.Printf("Recieved an error attempting to compress files: %s\n", err.Error())
+		os.Exit(1)
 	}
 }
