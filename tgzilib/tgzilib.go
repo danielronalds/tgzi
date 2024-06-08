@@ -1,8 +1,10 @@
 package tgzilib
 
 import (
+	"errors"
 	"fmt"
 	"os"
+	"os/exec"
 )
 
 // Gets the list of files and directories in a given directory
@@ -10,6 +12,7 @@ import (
 // # Params
 //
 // - `dir` The directory to look in. i.e. "." looks in the current directory
+//
 // - `hideDotfiles` Whether to return dotfiles or not
 //
 // # Returns
@@ -37,4 +40,58 @@ func GetFiles(dir string, hideDotfiles bool) ([]string, error) {
 	}
 
 	return files, nil
+}
+
+// Compress the slice of files into a .tar.gz archive
+//
+// # Params
+//
+// - `archive` The name of the archive to compress into
+//
+// - `files` The slice of files to compress
+//
+// # Returns
+//
+// An error if the archive already exists, or if  one occurs during either running the command
+func CompressFiles(archive string, files []string) error {
+	if len(files) == 0 {
+		return nil
+	}
+
+	// Checking if the file already exits
+	exists, err := fileExists(archive)
+	if err != nil {
+		return err
+	}
+	if exists {
+		return os.ErrExist
+	}
+
+	args := []string{"-czvf", archive}
+	for _, file := range files {
+		args = append(args, file)
+	}
+
+	cmd := exec.Command("tar", args...)
+
+	return cmd.Run()
+}
+
+// Returns whether a file exists or not
+//
+// # Params
+//
+// - `file` The name of the file to check
+func fileExists(file string) (bool, error) {
+	_, err := os.Stat(file)
+
+	if err == nil {
+		return true, nil
+	}
+
+	if errors.Is(err, os.ErrNotExist) {
+		return false, nil
+	}
+
+	return false, err
 }
