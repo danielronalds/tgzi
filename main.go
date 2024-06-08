@@ -1,18 +1,20 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/danielronalds/tgzi/tgzilib"
+	"github.com/danielronalds/tgzi/tgzitui"
+	tea "github.com/charmbracelet/bubbletea"
 )
 
 func main() {
 	files, err := tgzilib.GetFiles(".", false)
+
 	if err != nil {
 		panic(err)
 	}
 
-	for _, file := range files {
-		fmt.Println(file)
+	p := tea.NewProgram(tgzitui.NewTuiModel(files))
+	if _, err := p.Run(); err != nil {
+		panic(err)
 	}
 }
