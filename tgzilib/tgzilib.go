@@ -16,18 +16,18 @@ import (
 //
 // Returns an error if the directory is unreadable, otherwise a slice of filenames as strings
 func GetFiles(dir string, hideDotfiles bool) ([]string, error) {
-	entries, err := os.ReadDir(dir);
+	entries, err := os.ReadDir(dir)
 	if err != nil {
 		return nil, err
 	}
 
 	files := make([]string, 0)
 
-	for _, entry  := range entries {
+	for _, entry := range entries {
 		filename := entry.Name()
 
 		if filename[0] == '.' && hideDotfiles {
-			continue;
+			continue
 		}
 
 		if entry.IsDir() {
