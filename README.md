@@ -3,15 +3,34 @@
 An interactive file picker for compressing files into a 
 tar.gz archive
 
-## Goals
+![demo](./resources/tgzi-demo.gif)
 
-- [ ] Written in either rust or golang (bubbletea?)
-- [ ] Easy to use
-- [ ] feature 'complete'
-- [ ] Packaged into nixpkgs?
+## Installation
 
-## Relevant resources
+Can be installed with `go install`
 
-- https://blog.ktz.me/packaging-a-go-app-for-nixos/
-- https://github.com/NixOS/nixpkgs/pull/289152
-- https://github.com/NixOS/nixpkgs/pull/289322
+```console
+go install github.com/danielronalds/tgzi
+```
+
+## Usage
+
+Simply call the program in the directory of the files you'd
+like to compress, select the files you'd like and hit enter
+to compress them. You'll be prompted for a name, but leaving
+this blank results in the default `archive.tar.gz` being
+created
+
+```console
+tgzi
+```
+
+### Keybindings
+
+| Key    | Action                  |
+| ------ | ----------------------- |
+| up/k   |  Navigate up the list   |
+| down/j |  Navigate down the list |
+| space  |  Select a file          |
+| enter  |  Compress files         |
+| ?      |  Toggle help menu       |
