@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"sort"
 	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"
@@ -25,6 +26,8 @@ type TuiModel struct {
 
 // Creates a new tui for selecting from the given files
 func NewTuiModel(files []string) TuiModel {
+	sort.Strings(files)
+
 	return TuiModel{
 		files:         files,
 		selected:      make(map[int]struct{}),
@@ -64,7 +67,7 @@ func (m TuiModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 
 		case " ":
-			if m.help {
+			if !m.help {
 				_, ok := m.selected[m.cursor]
 				if ok {
 					delete(m.selected, m.cursor)
