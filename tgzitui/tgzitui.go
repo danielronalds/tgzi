@@ -46,7 +46,7 @@ func (m TuiModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, tea.Quit
 
 		case "up", "k":
-			if m.cursor > 0 {
+			if !m.help && m.cursor > 0 {
 				m.cursor--
 				if m.cursor < m.min {
 					m.min -= filesPerPage
@@ -55,7 +55,7 @@ func (m TuiModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 
 		case "down", "j":
-			if m.cursor < len(m.files)-1 {
+			if !m.help && m.cursor < len(m.files)-1 {
 				m.cursor++
 				if m.cursor > m.max {
 					m.min += filesPerPage
@@ -64,11 +64,13 @@ func (m TuiModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 
 		case " ":
-			_, ok := m.selected[m.cursor]
-			if ok {
-				delete(m.selected, m.cursor)
-			} else {
-				m.selected[m.cursor] = struct{}{}
+			if m.help {
+				_, ok := m.selected[m.cursor]
+				if ok {
+					delete(m.selected, m.cursor)
+				} else {
+					m.selected[m.cursor] = struct{}{}
+				}
 			}
 
 		case "enter":
@@ -130,7 +132,7 @@ func (m TuiModel) View() string {
 		filesPrinted += 1
 	}
 
-	for len(m.files) > filesPerPage && ((filesPerPage + 1) - filesPrinted) > 0 {
+	for len(m.files) > filesPerPage && ((filesPerPage+1)-filesPrinted) > 0 {
 		s += "\n"
 		filesPrinted += 1
 	}
