@@ -31,7 +31,8 @@ tgzi
 | ------ | ----------------------- |
 | up/k   |  Navigate up the list   |
 | down/j |  Navigate down the list |
-| space  |  Select a file          |
+| space  |  Select/Deselect a file |
 | A      |  Select all files       |
+| D      |  Deselect all files     |
 | enter  |  Compress files         |
 | ?      |  Toggle help menu       |

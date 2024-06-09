@@ -83,6 +83,13 @@ func (m TuiModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				}
 			}
 
+		case "D":
+			if !m.help {
+				for i := range m.files {
+					delete(m.selected, i)
+				}
+			}
+
 		case "enter":
 			for i, file := range m.files {
 				if _, ok := m.selected[i]; ok {
@@ -108,8 +115,9 @@ func (m TuiModel) View() string {
 ├────────┼─────────────────────────┤
 │ up/k   │  Navigate up the list   │
 │ down/j │  Navigate down the list │
-│ space  │  Select a file          │
+│ space  │  Select/Deselect a file │
 │ A      │  Select all files       │
+│ D      │  Deselect all files     │
 │ enter  │  Compress files         │
 │ ?      │  Toggle help menu       │
 └────────┴─────────────────────────┘
