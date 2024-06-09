@@ -49,8 +49,8 @@ func (m TuiModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if m.cursor > 0 {
 				m.cursor--
 				if m.cursor < m.min {
-					m.min -= filesPerPage;
-					m.max -= filesPerPage;
+					m.min -= filesPerPage
+					m.max -= filesPerPage
 				}
 			}
 
@@ -58,8 +58,8 @@ func (m TuiModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if m.cursor < len(m.files)-1 {
 				m.cursor++
 				if m.cursor > m.max {
-					m.min += filesPerPage;
-					m.max += filesPerPage;
+					m.min += filesPerPage
+					m.max += filesPerPage
 				}
 			}
 
@@ -105,12 +105,14 @@ func (m TuiModel) View() string {
 	currPage := (m.cursor / filesPerPage) + 1
 	maxPages := (len(m.files) / filesPerPage) + 1
 	if maxPages > 1 {
-		s += fmt.Sprintf(" (%v/%v)", currPage,  maxPages)
+		s += fmt.Sprintf(" (%v/%v)", currPage, maxPages)
 	}
+
+	filesPrinted := 0
 
 	for i, file := range m.files {
 		if i < m.min || i > m.max {
-			continue;
+			continue
 		}
 
 		cursor := " "
@@ -124,6 +126,13 @@ func (m TuiModel) View() string {
 		}
 
 		s += fmt.Sprintf("\n%s [%s] %s", cursor, checked, file)
+
+		filesPrinted += 1
+	}
+
+	for len(m.files) > filesPerPage && ((filesPerPage + 1) - filesPrinted) > 0 {
+		s += "\n"
+		filesPrinted += 1
 	}
 
 	s += "\nPress ? for help"
