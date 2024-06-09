@@ -113,9 +113,9 @@ func GetArchiveName() (string, error) {
 
 	archive, err := reader.ReadString('\n')
 	if err != nil {
-		return "", err;
+		return "", err
 	}
-    archive = strings.Replace(archive, "\n", "", -1)
+	archive = strings.Replace(archive, "\n", "", -1)
 
 	return archive, nil
 }

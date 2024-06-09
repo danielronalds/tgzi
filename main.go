@@ -25,7 +25,6 @@ func main() {
 
 	tuiModel := model.(tgzitui.TuiModel)
 
-
 	archive, _ := tgzitui.GetArchiveName()
 	archive = tgzilib.NormaliseArchiveName(archive)
 
