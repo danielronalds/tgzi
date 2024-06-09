@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 // Gets the list of files and directories in a given directory
@@ -94,4 +95,18 @@ func fileExists(file string) (bool, error) {
 	}
 
 	return false, err
+}
+
+// Ensures the archive has the file extensions `.tar.gz`
+//
+// # Params
+//
+// - `archive` The name of the archive
+//
+// # Returns
+//
+// The archive name with the appropriate file extension
+func NormaliseArchiveName(archive string) string {
+	file := strings.Split(archive, ".")
+	return fmt.Sprintf("%s.tar.gz", file[0])
 }

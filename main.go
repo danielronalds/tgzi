@@ -26,7 +26,9 @@ func main() {
 	tuiModel := model.(tgzitui.TuiModel)
 
 
-	archive, err := tgzitui.GetArchiveName()
+	archive, _ := tgzitui.GetArchiveName()
+	archive = tgzilib.NormaliseArchiveName(archive)
+
 	err = tgzilib.CompressFiles(archive, tuiModel.SelectedFiles)
 	if err != nil {
 		fmt.Printf("Recieved an error attempting to compress files: %s\n", err.Error())

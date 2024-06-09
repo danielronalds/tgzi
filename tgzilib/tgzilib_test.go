@@ -4,6 +4,7 @@ import (
 	"errors"
 	"os"
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -63,5 +64,29 @@ func TestCompressFilesReturningIfFileExists(t *testing.T) {
 
 	if !errors.Is(err, os.ErrExist) {
 		t.Fatalf("Expected ErrExist, got %v", err)
+	}
+}
+
+func TestNormaliseArchiveName(t *testing.T) {
+	unformatedArchive := "archive"
+
+	want := "archive.tar.gz"
+
+	result := NormaliseArchiveName(unformatedArchive)
+
+	if strings.Compare(want, result) != 0 {
+		t.Fatalf("Wanted %s, got %s", want, result)
+	}
+}
+
+func TestNormaliseArchiveNameWithNormalisedName(t *testing.T) {
+	unformatedArchive := "archive.tar.gz"
+
+	want := "archive.tar.gz"
+
+	result := NormaliseArchiveName(unformatedArchive)
+
+	if strings.Compare(want, result) != 0 {
+		t.Fatalf("Wanted %s, got %s", want, result)
 	}
 }
