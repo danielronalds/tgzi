@@ -76,6 +76,13 @@ func (m TuiModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				}
 			}
 
+		case "A":
+			if !m.help {
+				for i := range m.files {
+					m.selected[i] = struct{}{}
+				}
+			}
+
 		case "enter":
 			for i, file := range m.files {
 				if _, ok := m.selected[i]; ok {
@@ -102,6 +109,7 @@ func (m TuiModel) View() string {
 │ up/k   │  Navigate up the list   │
 │ down/j │  Navigate down the list │
 │ space  │  Select a file          │
+│ A      │  Select all files       │
 │ enter  │  Compress files         │
 │ ?      │  Toggle help menu       │
 └────────┴─────────────────────────┘
