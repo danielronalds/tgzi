@@ -37,4 +37,6 @@ func main() {
 		fmt.Printf("Recieved an error attempting to compress files: %s\n", err.Error())
 		os.Exit(1)
 	}
+
+	fmt.Printf("Created %s\n", archive)
 }
