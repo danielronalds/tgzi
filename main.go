@@ -25,6 +25,10 @@ func main() {
 
 	tuiModel := model.(tgzitui.TuiModel)
 
+	if len(tuiModel.SelectedFiles) == 0 {
+		return;
+	}
+
 	archive, _ := tgzitui.GetArchiveName()
 	archive = tgzilib.NormaliseArchiveName(archive)
 
