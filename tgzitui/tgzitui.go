@@ -96,12 +96,18 @@ func (m TuiModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m TuiModel) View() string {
 	if m.help {
-		s := "Key        Action"
-		s += "\nup/k       navigate up the list"
-		s += "\ndown/j     navigate down the list"
-		s += "\nspace      Select a file"
-		s += "\nenter      Compress files"
-		s += "\n?          toggle help menu"
+		s := `┌────────┬─────────────────────────┐
+│ Key    │ Action                  │
+├────────┼─────────────────────────┤
+│ up/k   │  Navigate up the list   │
+│ down/j │  Navigate down the list │
+│ space  │  Select a file          │
+│ enter  │  Compress files         │
+│ ?      │  Toggle help menu       │
+└────────┴─────────────────────────┘
+
+tgzi v1.0.0
+`
 		return s
 	}
 
