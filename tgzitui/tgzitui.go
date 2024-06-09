@@ -9,12 +9,16 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 )
 
+const filesPerPage int = 10
+
 // The data model for the TUI containing the state of the interface
 type TuiModel struct {
 	files    []string
 	cursor   int
 	selected map[int]struct{}
 	help     bool
+	min      int
+	max      int
 	// The exported list of files that were selected. Populated on exit
 	SelectedFiles []string
 }
@@ -25,6 +29,8 @@ func NewTuiModel(files []string) TuiModel {
 		files:         files,
 		selected:      make(map[int]struct{}),
 		SelectedFiles: make([]string, 0),
+		min:           0,
+		max:           10,
 	}
 }
 
@@ -42,11 +48,19 @@ func (m TuiModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "up", "k":
 			if m.cursor > 0 {
 				m.cursor--
+				if m.cursor < m.min {
+					m.min -= filesPerPage;
+					m.max -= filesPerPage;
+				}
 			}
 
 		case "down", "j":
 			if m.cursor < len(m.files)-1 {
 				m.cursor++
+				if m.cursor > m.max {
+					m.min += filesPerPage;
+					m.max += filesPerPage;
+				}
 			}
 
 		case " ":
@@ -86,9 +100,19 @@ func (m TuiModel) View() string {
 		return s
 	}
 
-	s := "Select files to compress\n"
+	s := "Select files to compress"
+
+	currPage := (m.cursor / filesPerPage) + 1
+	maxPages := (len(m.files) / filesPerPage) + 1
+	if maxPages > 1 {
+		s += fmt.Sprintf(" (%v/%v)", currPage,  maxPages)
+	}
 
 	for i, file := range m.files {
+		if i < m.min || i > m.max {
+			continue;
+		}
+
 		cursor := " "
 		if m.cursor == i {
 			cursor = ">"
@@ -99,7 +123,7 @@ func (m TuiModel) View() string {
 			checked = "x"
 		}
 
-		s += fmt.Sprintf("%s [%s] %s\n", cursor, checked, file)
+		s += fmt.Sprintf("\n%s [%s] %s", cursor, checked, file)
 	}
 
 	s += "\nPress ? for help"
