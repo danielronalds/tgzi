@@ -109,7 +109,7 @@ func (m TuiModel) View() string {
 // Runs a one line prompt for the user to type the filename of the archive into
 func GetArchiveName() (string, error) {
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("Archive name: ")
+	fmt.Print("Archive name (Leave blank for default)\n> ")
 
 	archive, err := reader.ReadString('\n')
 	if err != nil {

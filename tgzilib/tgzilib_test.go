@@ -8,6 +8,7 @@ import (
 	"testing"
 )
 
+// Tests if GetFiles works with the expected conditions
 func TestGetFiles(t *testing.T) {
 	inputDir := "."
 	want := []string{"tgzilib.go", "tgzilib_test.go"}
@@ -67,6 +68,7 @@ func TestCompressFilesReturningIfFileExists(t *testing.T) {
 	}
 }
 
+// Testing if NormaliseArchiveName appends the file extension
 func TestNormaliseArchiveName(t *testing.T) {
 	unformatedArchive := "archive"
 
@@ -79,8 +81,24 @@ func TestNormaliseArchiveName(t *testing.T) {
 	}
 }
 
+// Testing how NormaliseArchiveName behaves if the file already has the file extension
 func TestNormaliseArchiveNameWithNormalisedName(t *testing.T) {
 	unformatedArchive := "archive.tar.gz"
+
+	want := "archive.tar.gz"
+
+	result := NormaliseArchiveName(unformatedArchive)
+
+	if strings.Compare(want, result) != 0 {
+		t.Fatalf("Wanted %s, got %s", want, result)
+	}
+}
+
+// Testing how NormaliseArchiveName behaves with a blank file name
+//
+// NOTE: Expected behaviour is to supply a default name
+func TestNormaliseArchiveNameWithBlankName(t *testing.T) {
+	unformatedArchive := ""
 
 	want := "archive.tar.gz"
 

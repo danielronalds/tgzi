@@ -107,6 +107,10 @@ func fileExists(file string) (bool, error) {
 //
 // The archive name with the appropriate file extension
 func NormaliseArchiveName(archive string) string {
+	if len(archive) == 0 {
+		return "archive.tar.gz"
+	}
+
 	file := strings.Split(archive, ".")
 	return fmt.Sprintf("%s.tar.gz", file[0])
 }
